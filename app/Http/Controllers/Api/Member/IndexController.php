@@ -15,9 +15,10 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
-        print_r($request->input());
+        phpinfo();
+        /*print_r($request->input());
         if ($member = Members::where("nickName", "小红")->first()) {
             print_r($member->toArray());
-        }
+        }*/
     }
 }
