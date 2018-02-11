@@ -35,6 +35,7 @@ class IndexController extends Controller
         if (Cache::get($member->token)) {
             return $this->success($member);
         } else {
+            $member->token = md5($data['nickName'] . time() . rand(0, 9999));
             $member->token_time = date("Y-m-d H:i:s", strtotime("+1 month"));
             Cache::put($member->token, serialize($member), 30 * 24 * 60);
             if (!$member->save()) {
