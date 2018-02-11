@@ -14,4 +14,4 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/api/member/login',"Api\Member\IndexController@index");
+Route::post('/api/member/login', "Api\Member\IndexController@index");

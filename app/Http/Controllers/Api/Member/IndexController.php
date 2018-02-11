@@ -15,10 +15,13 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
-        //phpinfo();
-        print_r($request->input());
-        if ($member = Members::where("nickName", "小红")->first()) {
-            print_r($member->toArray());
+        $request = $request->input();
+        if (!$member = Members::where("nickName", $request['nickName'])->first()) {
+            $member = new Members();
+            if (!$member->save($request)) {
+                return $this->error("数据库保存错误");
+            }
+            return $this->success($member);
         }
     }
 }
