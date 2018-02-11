@@ -32,7 +32,15 @@ class IndexController extends Controller
                 return $this->error("数据库保存错误");
             }
         }
-        Cache::put($member->token,serialize($member),30*24*60);
-        return $this->success($member);
+        if(Cache::get($member->token)){
+            return $this->success($member);
+        }else{
+            Cache::put($member->token,serialize($member),30*24*60);
+            $member->token_time = date("Y-m-d H:i:s",strtotime("+1 month"));
+            if (!$member->save()) {
+                return $this->error("数据库保存错误");
+            }
+            return $this->success($member);
+        }
     }
 }
