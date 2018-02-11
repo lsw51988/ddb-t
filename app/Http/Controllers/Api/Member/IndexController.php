@@ -16,9 +16,9 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $data = $request->input();
-        if (!$member = Members::where("nickName", $request['nickName'])->first()) {
+        if (!$member = Members::where("nickName", $data['nickName'])->first()) {
             $member = new Members();
-            if (!$member->save($request)) {
+            if (!$member->save($data)) {
                 return $this->error("数据库保存错误");
             }
             return $this->success($member);
