@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Member;
 
 use App\Model\Members;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,10 +19,20 @@ class IndexController extends Controller
         $data = $request->input();
         if (!$member = Members::where("nickName", $data['nickName'])->first()) {
             $member = new Members();
-            if (!$member->save($data)) {
+            $member->avatarUrl = $data['avatarUrl'];
+            $member->nickName = $data['nickName'];
+            $member->gender = $data['gender'];
+            $member->city = $data['city'];
+            $member->province = $data['province'];
+            $member->country = $data['country'];
+            $member->language = $data['language'];
+            $member->token = md5($data['nickName'] . time() . rand(0, 9999));
+            $member->token_time = date("Y-m-d H:i:s",strtotime("+1 month"));
+            if (!$member->save()) {
                 return $this->error("数据库保存错误");
             }
-            return $this->success($member);
         }
+        Cache::put($member->token,serialize($member),30*24*60);
+        return $this->success($member);
     }
 }
