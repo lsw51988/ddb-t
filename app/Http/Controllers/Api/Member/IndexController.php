@@ -49,15 +49,11 @@ class IndexController extends Controller
     /**
      * 获取图形验证码
      */
-    public function captcha(Request $request){
-        $token = $request->header('token');
-        if(Cache::has($token)){
-            $_vc = new Captcha();  //实例化一个对象
-            $_SESSION['captcha'] = $_vc->getCode();
-            $_vc->doimg();
-        }else{
-            return $this->error("token过期,请重新登录");
-        }
+    public function captcha(Request $request)
+    {
+        $_vc = new Captcha();  //实例化一个对象
+        $_SESSION['captcha'] = $_vc->getCode();
+        $_vc->doimg();
     }
 
 
