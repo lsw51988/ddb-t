@@ -58,7 +58,7 @@ class Captcha
     }
     //输出
     private function outPut() {
-        header('Content-type:image/png');
+        header('Content-type:image/jpeg');
         imagepng($this->img);
         imagedestroy($this->img);
     }
