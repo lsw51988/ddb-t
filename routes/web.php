@@ -15,3 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::post('/api/member/login', "Api\Member\IndexController@index");
+Route::get('/api/member/captcha', "Api\Member\IndexController@captcha");

@@ -6,6 +6,7 @@ use App\Model\Members;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Helper\Captcha;
 
 class IndexController extends Controller
 {
@@ -35,4 +36,20 @@ class IndexController extends Controller
         Cache::put($member->token,serialize($member),30*24*60);
         return $this->success($member);
     }
+
+    /**
+     * 获取图形验证码
+     */
+    public function captcha(Request $request){
+        $token = $request->header('token');
+        if(Cache::has($token)){
+            $_vc = new Captcha();  //实例化一个对象
+            $_SESSION['captcha'] = $_vc->getCode();
+            $_vc->doimg();
+        }else{
+            return $this->error("token过期,请重新登录");
+        }
+    }
+
+
 }
