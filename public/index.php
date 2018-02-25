@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Laravel - A PHP Framework For Web Artisans
  *
@@ -8,7 +8,7 @@
  */
 
 define('LARAVEL_START', microtime(true));
-session_start();
+
 
 /*
 |--------------------------------------------------------------------------

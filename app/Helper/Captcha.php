@@ -72,6 +72,6 @@ class Captcha
     }
     //获取验证码
     public function getCode() {
-        return strtolower($this->code);
+        return $this->code;
     }
 }
