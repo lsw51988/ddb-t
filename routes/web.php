@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 Route::post('/api/member/login', "Api\Member\IndexController@index");
 Route::get('/api/member/captcha', "Api\Member\IndexController@captcha");
+Route::get('/api/member/verifyCaptcha', "Api\Member\IndexController@verifyCaptcha");
