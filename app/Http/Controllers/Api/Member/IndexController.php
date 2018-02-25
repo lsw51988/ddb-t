@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helper\Captcha;
+use Illuminate\Support\Facades\Session;
 
 class IndexController extends Controller
 {
@@ -53,6 +54,7 @@ class IndexController extends Controller
     {
         $_vc = new Captcha();  //实例化一个对象
         session(['captcha' =>  $_vc->getCode()]);
+        Session::put('captcha', $_vc->getCode());
         $_vc->doimg();
     }
 
@@ -62,7 +64,7 @@ class IndexController extends Controller
     public function verifyCaptcha(Request $request)
     {
         $captcha = $request->input('captcha');
-        if(session('captcha')==$captcha){
+        if(Session::get('captcha')==$captcha){
             return $this->success();
         }
         return $this->error();
