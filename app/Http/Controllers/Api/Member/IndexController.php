@@ -53,8 +53,7 @@ class IndexController extends Controller
     public function captcha(Request $request)
     {
         $_vc = new Captcha();  //实例化一个对象
-        session(['captcha' =>  $_vc->getCode()]);
-        Session::put('captcha', $_vc->getCode());
+        session(['captcha'=>$_vc->getCode()]);
         $_vc->doimg();
     }
 
@@ -64,7 +63,7 @@ class IndexController extends Controller
     public function verifyCaptcha(Request $request)
     {
         $captcha = $request->input('captcha');
-        return $this->success(Session::get('captcha'));
+        return $this->success(session('captcha'));
 
         if(Session::get('captcha')==$captcha){
             return $this->success();
