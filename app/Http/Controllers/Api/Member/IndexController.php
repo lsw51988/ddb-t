@@ -64,6 +64,8 @@ class IndexController extends Controller
     public function verifyCaptcha(Request $request)
     {
         $captcha = $request->input('captcha');
+        return $this->success(Session::get('captcha'));
+
         if(Session::get('captcha')==$captcha){
             return $this->success();
         }
