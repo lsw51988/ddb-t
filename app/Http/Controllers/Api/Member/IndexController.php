@@ -20,7 +20,7 @@ class IndexController extends Controller
     {
         $data = $request->input();
         $url = "https://api.weixin.qq.com/sns/jscode2session?appid=wxb029435696312911&secret=5d499d686d12d42f12a9e1df55209c08&js_code=" . $data['js_code'] . "&grant_type=authorization_code";
-        $apiContent = file_get_contents($url);
+        $apiContent = json_decode(file_get_contents($url));
 
         if (!$member = Members::where("nickName", $data['nickName'])->first()) {
             $member = new Members();
