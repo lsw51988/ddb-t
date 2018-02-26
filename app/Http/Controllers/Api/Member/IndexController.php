@@ -40,6 +40,7 @@ class IndexController extends Controller
             $member->token = md5($data['nickName'] . time() . rand(0, 9999));
             $member->token_time = date("Y-m-d H:i:s", strtotime("+1 month"));
             Cache::put($member->token, serialize($member), 30 * 24 * 60);
+            session($member->token, serialize($member), 30 * 24 * 60);
             if (!$member->save()) {
                 return $this->error("数据库保存错误");
             }
