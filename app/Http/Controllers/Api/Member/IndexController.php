@@ -39,8 +39,7 @@ class IndexController extends Controller
         }
 
         if (Cache::get($member->token)) {
-            $third_session_key = md5($data['nickName'] . time() . rand(0, 9999));
-            session($third_session_key, $apiContent->session_key . $apiContent->openid);
+            session($member->token, $apiContent->session_key . $apiContent->openid);
             return $this->success($member);
         } else {
             $member->token = md5($data['nickName'] . time() . rand(0, 9999));
