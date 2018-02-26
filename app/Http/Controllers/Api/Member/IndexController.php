@@ -39,13 +39,14 @@ class IndexController extends Controller
         }
 
         if (Cache::get($member->token)) {
+            $third_session_key = md5($data['nickName'] . time() . rand(0, 9999));
+            session($third_session_key, $apiContent->session_key . $apiContent->openid);
             return $this->success($member);
         } else {
             $member->token = md5($data['nickName'] . time() . rand(0, 9999));
             $member->token_time = date("Y-m-d H:i:s", strtotime("+1 month"));
             Cache::put($member->token, serialize($member), 30 * 24 * 60);
-            $third_session_key = md5($data['nickName'] . time() . rand(0, 9999));
-            session($third_session_key, $apiContent->session_key . $apiContent->openid);
+            session($member->token, $apiContent->session_key . $apiContent->openid);
             if (!$member->save()) {
                 return $this->error("数据库保存错误");
             }
