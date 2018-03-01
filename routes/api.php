@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/member/login', "Api\Member\IndexController@index")->name("apiLogin");
+Route::get('/member/captcha', "Api\Member\IndexController@captcha");
+Route::get('/member/verifyCaptcha', "Api\Member\IndexController@verifyCaptcha");
+
+Route::post('/info', "Api\Member\InfoAuthController@store");

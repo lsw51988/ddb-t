@@ -14,9 +14,3 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['middleware'=>['web']],function(){
-    Route::post('/api/member/login', "Api\Member\IndexController@index");
-    Route::get('/api/member/captcha', "Api\Member\IndexController@captcha");
-    Route::get('/api/member/verifyCaptcha', "Api\Member\IndexController@verifyCaptcha");
-    Route::get('/info', "Api\Member\IndexController@info");
-});

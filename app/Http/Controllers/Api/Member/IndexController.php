@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helper\Captcha;
-use Illuminate\Support\Facades\Session;
 
 class IndexController extends Controller
 {
@@ -19,9 +18,6 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $data = $request->input();
-        $url = "https://api.weixin.qq.com/sns/jscode2session?appid=wxb029435696312911&secret=5d499d686d12d42f12a9e1df55209c08&js_code=" . $data['js_code'] . "&grant_type=authorization_code";
-        $apiContent = json_decode(file_get_contents($url));
-
         if (!$member = Members::where("nickName", $data['nickName'])->first()) {
             $member = new Members();
             $member->avatarUrl = $data['avatarUrl'];
@@ -37,15 +33,12 @@ class IndexController extends Controller
                 return $this->error("数据库保存错误");
             }
         }
-
         if (Cache::get($member->token)) {
-            session([$member->token => $apiContent->session_key . $apiContent->openid]);
             return $this->success($member);
         } else {
             $member->token = md5($data['nickName'] . time() . rand(0, 9999));
             $member->token_time = date("Y-m-d H:i:s", strtotime("+1 month"));
             Cache::put($member->token, serialize($member), 30 * 24 * 60);
-            session([$member->token => $apiContent->session_key . $apiContent->openid]);
             if (!$member->save()) {
                 return $this->error("数据库保存错误");
             }
@@ -58,9 +51,11 @@ class IndexController extends Controller
      */
     public function captcha(Request $request)
     {
+        $token = $request->input("token");
         $_vc = new Captcha();  //实例化一个对象
         $_vc->doimg();
-        session(['captcha' => $_vc->getCode()]);
+        $key = $token . 'captcha';
+        cache([$key=>$_vc->getCode()],3);
     }
 
     /**
@@ -69,7 +64,9 @@ class IndexController extends Controller
     public function verifyCaptcha(Request $request)
     {
         $captcha = $request->input('captcha');
-        if (session('captcha') == $captcha) {
+        $token = $request->header("token");
+        $key = $token . 'captcha';
+        if ($captcha == Cache::get($key)) {
             return $this->success();
         }
         return $this->error();
