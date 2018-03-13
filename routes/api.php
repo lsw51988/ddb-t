@@ -21,3 +21,4 @@ Route::get('/member/captcha', "Api\Member\IndexController@captcha");
 Route::get('/member/verifyCaptcha', "Api\Member\IndexController@verifyCaptcha");
 
 Route::post('/info', "Api\Member\InfoAuthController@store");
+Route::get('/swoole', "Api\Member\SwooleController@test");
