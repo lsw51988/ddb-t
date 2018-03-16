@@ -1,0 +1,146 @@
+表的一切设计是为了提高用户体验
+    1.减少求助者求助等待时间
+    2.增加修理店老板的收入
+    3.需要平衡1,2两点
+
+
+1.用户信息表 如果用户微信未曾填写相关地址信息需要根据经纬度逆向解析出用户地址，用户为授权地址信息则无法注册 http://lbs.qq.com/webservice_v1/guide-gcoder.html
+members
+    id
+    avatarUrl 微信头像 not null
+    province 所在省  not null
+    city 所在城市 not null
+    district 所在区 not null
+    country 国家 not null
+    language 语言 not null
+    gender 性别 not null 1男 0女
+    nickName 微信昵称 not null
+    realName 真实姓名 Null
+    mobile 手机号码 null
+    points 可用积分 default 0
+    type 类型 骑行者0 修理者1 default 0
+    auth_time 认证时间 null
+    token_time token有效时间 null
+    timestamp
+
+2.后台用户表
+users
+    id
+    name 姓名 not null
+    password 密码 not null
+    role_id 角色id not null 对应roles
+    mobile 手机 not null
+    status 状态 0不可用 1可用
+    email 邮箱 not null
+    creator_id 创建者 对应user not null
+    updater_id 更新者 对应user null
+    department_id 部门id not null
+    timestamp
+
+3.角色表
+roles
+    id
+    parent_id 父亲节点 default 0
+    name 角色名称 not null
+    desc 角色描述 not null
+    status 状态 0禁用 1启用
+    creator_id 创建者 对应user not null
+    updater_id 更新者 对应user null
+    timestamp
+
+4.权限表
+accesses
+    id
+    parent_id 父亲节点 not null default 0
+    access_id 权限id not null
+    model_id 模块id not null 代码注释标注
+
+5.角色权限表
+role_accesses
+    id
+    role_id 角色id 对应roles表
+    access_id 权限id 对应access表
+
+6.用户角色表
+user_roles
+    id
+    user_id
+    role_id
+    creator_id 创建者 对应user not null
+    updater_id 更新者 对应user null
+    timestamp
+
+
+=================================分割线=================================
+=================================分割线=================================
+
+
+7.用户积分表
+member_points
+    id
+    member_id
+    type 类型，描述用户如何获得积分
+            增加方式：   1注册 2每日打开第一次 3用户完善信息 4增加维修点 5第一次探索新的页面 6提出建议（最多10次） 7提出建议被采纳 8推荐奖励（最多20次） 9推荐成功 10评分 11完成应答
+            减少方式：   -1 商城 -2保险 -3发布二手车信息
+    value 数值 not null
+            类别分数：   1注册5分 2每日打开1分 3用户完善5分 4添加维修点10分 5第一次探索1分 6提出建议1分 7被采纳5分 8推荐1分 9推荐成功5分 10评分2分 11完成应答2分
+                       -1商城待定 -2保险待定 -3发布二手车信息1分一毛钱 4取消帮助将会扣除积分
+    timestamp
+
+8.用户电动车求助表 求助者可以取消 持续时间为30分钟
+appeals
+    id
+    ask_id 求助人id 对应member not null
+    awr_id 当前帮助人id 对应member null
+    type 故障类型 not null
+    des 故障描述 not null
+    mobile 手机号 not null
+    longitude 经度 not null
+    latitude 纬度 not null
+    price 价格 null 主动请求拖车帮助才会有price
+    updates 更新次数 default 0
+    update_des 更新描述 null
+    status 状态  1请求帮助 2求助人自助取消 3时间到期系统取消
+                4帮助人应答 5帮助完成
+    awr_time 首次应答时间 null
+    awr_cancel_time 应答取消时间 null
+    awr_fin_time 应答完成时间 null
+    timestamp
+
+9.求助应答表 取消应答在下一次的抢单过程中优先级会被降低
+appeal_answers
+    id
+    appeal_id not null 对应appeals表
+    awr_id 应答人id 对应member not null
+    type 类型 1来自用户查看附近维修点 2.用户主动请求拖车帮助 not null
+    status 1开始帮助 2帮助完成 3取消帮助 default 1
+    cancel_reason 取消原因 null
+    cancel_time 取消时间 null
+    create_time 创建时间 default now
+    finish_time 完成时间 null
+
+10.修理点资料
+repairs
+    id
+    name 名称 not null
+    longitude 经度 not null
+    latitude 纬度 not null
+    mobile 电话 not null
+    phone 手机 null
+    creator_id 创建人 not null 对应member
+    belonger_id 归属者 null 对应member null
+    auditor_id 后台审核者 null 对应user null
+    status 状态 1被创建 2后台审核通过 3后台审核拒绝 default 1
+    refuse_reason 拒绝原因 null
+    timestamp
+
+11.修理店图片
+repair_images
+    id
+    repair_id 对应repair表
+    path 存储路径 not null
+    creator_id 上传人 not null 对应member/user
+    creator_type 上传人类型 not null 1=>member 2=>user
+    timestamp
+
+
