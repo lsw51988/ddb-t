@@ -143,4 +143,28 @@ repair_images
     creator_type 上传人类型 not null 1=>member 2=>user
     timestamp
 
+12.用户电动车
+member_bikes
+    id
+    member_id
+    buy_date 购买时间 not null
+    voltage 电压 not null
+    brand 品牌 not null
+    price 价格 not null
+    status 购买时的状态 not null
+    last_change_time 最近一次更换电池时间 null
+    number 牌照 null
+    timestamp
 
+13.电动车照片
+    id
+    member_bike_id not null
+    path 存储路径 not null
+    creator_id 上传人 not null 对应member
+    timestamp
+
+14.建议
+    id
+    member_id
+    content 具体描述 not null
+    type 类别 not null 
