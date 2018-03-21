@@ -129,11 +129,11 @@ appeal_callbacks
     wait_time 等待时长 not null
     fix_time 维修时长 not null
     price 维修价格 not null
-    level 满意程度 1不满意 2基本满意 3满意 not null
+    score 满意程度 1不满意 2基本满意 3满意 4非常满意 not null
     content 其他想说的 null
     timestamp
 
-11.修理点资料
+11.修理店资料
 repairs
     id
     name 名称 not null
@@ -142,20 +142,23 @@ repairs
     mobile 电话 not null
     phone 手机 null
     creator_id 创建人 not null 对应member
+    creator_type 创建人类型 not null 1=>member 2=>user
     belonger_id 归属者 null 对应member null
     auditor_id 后台审核者 null 对应user null
     status 状态 1被创建 2后台审核通过 3后台审核拒绝 default 1
+    path 修理店图片存储路径 not null
     refuse_reason 拒绝原因 null
     timestamp
 
-12.修理店图片
-repair_images
+12修理店评价表
+repair_appraises
     id
-    repair_id 对应repair表
-    path 存储路径 not null
-    creator_id 上传人 not null 对应member/user
-    creator_type 上传人类型 not null 1=>member 2=>user
+    repair_id 对应repairs
+    score not null 1不满意 2基本满意 3满意 4非常满意
+    content 描述 null
+    member_id 评价人id not null
     timestamp
+
 
 13.用户电动车
 member_bikes
@@ -195,7 +198,7 @@ suggestions
 scores
     id
     member_id
-    level 等级 1不满意 2基本满意 3满意 not null
+    score 评分 1不满意 2基本满意 3满意 4非常满意 not null
     content 附加内容 null
     timestamp
 
