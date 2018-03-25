@@ -71,4 +71,13 @@ class IndexController extends Controller
         }
         return $this->error();
     }
+
+    /**
+     * 获取二维码
+     */
+    public function qr_code(){
+        ob_clean();
+        header("Content-type:image/png");
+        echo file_get_contents('test.png',true);
+    }
 }

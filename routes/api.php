@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/member/login', "Api\Member\IndexController@index")->name("apiLogin");
 Route::get('/member/captcha', "Api\Member\IndexController@captcha");
 Route::get('/member/verifyCaptcha', "Api\Member\IndexController@verifyCaptcha");
+Route::get('/member/qr_code', "Api\Member\IndexController@qr_code");
 
 Route::post('/info', "Api\Member\InfoAuthController@store");
 Route::get('/swoole', "Api\Member\SwooleController@test");
