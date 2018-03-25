@@ -77,7 +77,7 @@ class IndexController extends Controller
      */
     public function qr_code(){
         ob_clean();
-        header("Content-type:image/png");
-        echo file_get_contents(app_path().'/../public/img/qr_code.png',true);
+        header("Content-type:image/jpeg");
+        echo file_get_contents(app_path().'/../public/img/qr_code.jpg',true);
     }
 }
