@@ -202,12 +202,25 @@ scores
     content 附加内容 null
     timestamp
 
+17.消息表
+messages
+    id
+    title 标题 not null
+    title_image 标题图片 not null
+    content 具体内容
+    timestamp
+18.已读消息表
+message_reads
+    id
+    message_id
+    member_id
+    timestamp
 
 =================================分割线=================================
 =================================分割线=================================
 
 
-17.二手车 默认发布的有效期是4天，可以延期一次时间为3天
+19.二手车 默认发布的有效期是4天，可以延期一次时间为3天
 second_bikes
     id
     member_id
@@ -227,7 +240,7 @@ second_bikes
     deal_time 成交时间 null
     timestamp
 
-18.二手车照片
+20.二手车照片
 second_bike_images
     id
     second_bike_id not null
@@ -235,7 +248,7 @@ second_bike_images
     creator_id 上传人 not null 对应member
     timestamp
 
-19.二手车浏览记录
+21.二手车浏览记录
 second_bike_browse_records
     id
     second_bike_id not null
@@ -248,7 +261,7 @@ second_bike_browse_records
 =================================分割线=================================
 数据分析用到
 
-20.用户第一次进入新的页面的时间记录
+22.用户第一次进入新的页面的时间记录
 page_records
     id
     member_id
@@ -274,13 +287,13 @@ page_records
             用户须知 inform - 17
     create_time
 
-21.用户每次进入时间(也可以分析每天的首次进入时间)
+23.用户每次进入时间(也可以分析每天的首次进入时间)
 member_ins
     id
     member_id
     create_time
 
-22.品牌表
+24.品牌表
 brands
     id
     parent_id 父亲节点 not null default 0
